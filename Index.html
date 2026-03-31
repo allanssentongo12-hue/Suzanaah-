@@ -1,0 +1,1359 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suzanaah Nursery and Primary School</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for aesthetic components -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Define custom colors for the coffee brown and cream theme */
+        :root {
+            --color-coffee: #6F4E37; /* Primary Brown */
+            --color-cream: #F5F5DC;  /* Secondary Cream */
+            --color-dark-text: #333333;
+        }
+
+        /* Set default font to Inter, as required */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-cream);
+        }
+
+        /* Custom Tailwind Configuration */
+        .coffee-bg { background-color: var(--color-coffee); }
+        .cream-bg { background-color: var(--color-cream); }
+        .coffee-text { color: var(--color-coffee); }
+        .cream-text { color: var(--color-cream); }
+        .dark-text { color: var(--color-dark-text); }
+        .border-coffee { border-color: var(--color-coffee); }
+
+        /* Custom scrollbar for better visual appeal */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-cream); }
+        ::-webkit-scrollbar-thumb { background: var(--color-coffee); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #5a4130; }
+
+        /* General Card Styling */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+        }
+
+        /* Button hover effect */
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(111, 78, 55, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col dark-text">
+
+    <!-- Navbar/Header Component -->
+    <header class="coffee-bg shadow-lg sticky top-0 z-10">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 cream-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6M9 18l-3 3M15 18l3 3"></path></svg>
+                    <span class="text-2xl font-bold cream-text">Suzanaah School</span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4 text-sm font-medium">
+                    <button onclick="navigate('home')" class="cream-text hover:underline focus:outline-none">Home</button>
+                    <button onclick="navigate('about')" class="cream-text hover:underline focus:outline-none">About Us</button>
+                    <button onclick="navigate('admissions')" class="cream-text hover:underline focus:outline-none">Admissions</button>
+                    <button onclick="navigate('contact')" class="cream-text hover:underline focus:outline-none">Contact</button>
+                    <button id="auth-button" onclick="handleAuthClick()" class="ml-4 px-4 py-2 rounded-lg cream-bg coffee-text transition-all btn-primary shadow-md">
+                        Login
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg cream-bg coffee-text" onclick="toggleMobileMenu()">
+                    <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden absolute w-full coffee-bg shadow-2xl">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center text-base">
+                <button onclick="navigate('home'); toggleMobileMenu();" class="block w-full px-3 py-2 rounded-md cream-text hover:bg-opacity-80">Home</button>
+                <button onclick="navigate('about'); toggleMobileMenu();" class="block w-full px-3 py-2 rounded-md cream-text hover:bg-opacity-80">About Us</button>
+                <button onclick="navigate('admissions'); toggleMobileMenu();" class="block w-full px-3 py-2 rounded-md cream-text hover:bg-opacity-80">Admissions</button>
+                <button onclick="navigate('contact'); toggleMobileMenu();" class="block w-full px-3 py-2 rounded-md cream-text hover:bg-opacity-80">Contact</button>
+                <button id="mobile-auth-button" onclick="handleAuthClick(); toggleMobileMenu();" class="w-full mt-2 px-3 py-2 rounded-lg cream-bg coffee-text font-bold transition-all btn-primary shadow-md">Login</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area (Dynamic View Container) -->
+    <main id="app-container" class="flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+        <!-- Content will be injected here based on the view state -->
+    </main>
+
+    <!-- Footer Component -->
+    <footer class="coffee-bg mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center cream-text text-sm">
+            &copy; 2025 Suzanaah Nursery and Primary School. All Rights Reserved.
+            <div class="mt-1">
+                <span id="user-id-display">Current User ID: Not Signed In</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Set log level for debugging
+        setLogLevel('debug');
+
+        // Global Firebase variables
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app, db, auth, currentView = 'home';
+        let currentUser = null; // Stores user object from Firebase
+        let userProfile = null; // Stores user role and name from Firestore
+
+        // --- Core Firebase Initialization ---
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            // 1. Handle Authentication
+            onAuthStateChanged(auth, async (user) => {
+                currentUser = user;
+                const userIdDisplay = document.getElementById('user-id-display');
+                const authButton = document.getElementById('auth-button');
+                const mobileAuthButton = document.getElementById('mobile-auth-button');
+
+                if (user) {
+                    const userId = user.uid;
+                    userIdDisplay.textContent = `Current User ID: ${userId}`;
+                    authButton.textContent = 'Dashboard';
+                    mobileAuthButton.textContent = 'Dashboard';
+
+                    // Start listening to the user's profile (role) in Firestore
+                    listenToUserProfile(userId);
+
+                } else {
+                    // Sign in anonymously if no custom token is provided
+                    if (!initialAuthToken) {
+                        await signInAnonymously(auth);
+                        console.log("Signed in anonymously.");
+                    } else {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                        console.log("Signed in with custom token.");
+                    }
+
+                    userIdDisplay.textContent = `Current User ID: Not Signed In`;
+                    authButton.textContent = 'Login';
+                    mobileAuthButton.textContent = 'Login';
+
+                    // If we just signed out, clear the profile
+                    userProfile = null;
+                }
+
+                // Initial render after auth state is known
+                navigate(currentView);
+            });
+
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            renderError('Firebase Initialization Error: Check console for details.');
+        }
+
+        // --- Firestore Operations ---
+
+        const getUserProfileRef = (userId) => {
+            // Path: /artifacts/{appId}/public/data/users/{userId}
+            return doc(db, 'artifacts', appId, 'public', 'data', 'users', userId);
+        };
+
+        const listenToUserProfile = (userId) => {
+            const profileRef = getUserProfileRef(userId);
+            
+            // Real-time listener for the user's profile/role
+            onSnapshot(profileRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    userProfile = docSnap.data();
+                    console.log("User Profile loaded:", userProfile);
+                    // Re-render dashboard if we are currently on it
+                    if (currentView === 'dashboard' || currentView === 'login') {
+                        navigate(currentView);
+                    }
+                } else {
+                    userProfile = null;
+                    console.log("User profile does not exist, navigate to role selection.");
+                    // Force navigation to login/role selection if not found
+                    if (currentView !== 'login') {
+                        navigate('login');
+                    } else {
+                        // Re-render login to show role selection
+                        navigate('login');
+                    }
+                }
+            }, (error) => {
+                console.error("Error listening to user profile:", error);
+                renderError('Failed to load user profile in real-time.');
+            });
+        };
+
+        const saveUserProfile = async (userId, name, role) => {
+            const profileRef = getUserProfileRef(userId);
+            try {
+                await setDoc(profileRef, {
+                    name,
+                    role,
+                    createdAt: new Date().toISOString()
+                }, { merge: true });
+                console.log("User profile saved successfully.");
+                return true;
+            } catch (error) {
+                console.error("Error saving user profile:", error);
+                renderError('Failed to save user profile.');
+                return false;
+            }
+        };
+
+        // --- View Logic and Rendering ---
+
+        window.navigate = (view) => {
+            currentView = view;
+            const container = document.getElementById('app-container');
+            container.innerHTML = '';
+            
+            if (currentUser && (view === 'login' || view === 'dashboard')) {
+                 // If logged in, clicking 'Login' button redirects to dashboard
+                 renderDashboardView();
+            } else if (view === 'login') {
+                renderLoginView();
+            } else if (view === 'about') {
+                renderAboutView();
+            } else if (view === 'admissions') {
+                renderAdmissionsView();
+            } else if (view === 'contact') {
+                renderContactView();
+            } else {
+                renderHomeView();
+            }
+        };
+
+        window.handleAuthClick = () => {
+            if (currentUser) {
+                // Already signed in, go to dashboard
+                navigate('dashboard');
+            } else {
+                // Not signed in, go to login
+                navigate('login');
+            }
+        };
+        
+        window.toggleMobileMenu = () => {
+            const menu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+            const isHidden = menu.classList.contains('hidden');
+
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        };
+
+        function renderError(message) {
+            const container = document.getElementById('app-container');
+            container.innerHTML = `
+                <div class="card bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+                    <p class="font-bold">Error Occurred</p>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        // --- Dynamic View Functions ---
+
+        function renderHomeView() {
+            const content = `
+                <section class="text-center py-16 px-4">
+                    <h1 class="text-5xl font-extrabold coffee-text mb-4">Welcome to Suzanaah School</h1>
+                    <p class="text-xl dark-text max-w-3xl mx-auto mb-8">
+                        Nurturing bright futures from nursery to primary levels with excellence, integrity, and faith.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="card p-6 border-l-4 border-coffee shadow-lg">
+                            <h3 class="text-2xl font-semibold coffee-text mb-2 flex items-center justify-center">
+                                <i data-lucide="book-open-text" class="w-6 h-6 mr-2"></i> Quality Education
+                            </h3>
+                            <p class="dark-text">A rigorous curriculum balanced with creative and moral development.</p>
+                        </div>
+                        <div class="card p-6 border-l-4 border-coffee shadow-lg">
+                            <h3 class="text-2xl font-semibold coffee-text mb-2 flex items-center justify-center">
+                                <i data-lucide="sparkles" class="w-6 h-6 mr-2"></i> Holistic Growth
+                            </h3>
+                            <p class="dark-text">Focus on physical, social, emotional, and spiritual well-being.</p>
+                        </div>
+                        <div class="card p-6 border-l-4 border-coffee shadow-lg">
+                            <h3 class="text-2xl font-semibold coffee-text mb-2 flex items-center justify-center">
+                                <i data-lucide="heart" class="w-6 h-6 mr-2"></i> Caring Community
+                            </h3>
+                            <p class="dark-text">A supportive environment where every child feels safe and valued.</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="py-12 px-4">
+                    <h2 class="text-3xl font-bold coffee-text text-center mb-8">Latest School News</h2>
+                    <div class="card max-w-4xl mx-auto p-6">
+                        <article class="border-b pb-4 mb-4">
+                            <h4 class="text-xl font-semibold coffee-text">Annual Sports Day Success</h4>
+                            <p class="text-sm text-gray-500">October 26, 2025</p>
+                            <p class="mt-2">Our students showcased incredible teamwork and sportsmanship at the annual event. Congratulations to all the participants!</p>
+                        </article>
+                        <article>
+                            <h4 class="text-xl font-semibold coffee-text">Enrollment for P1 and P2 Now Open</h4>
+                            <p class="text-sm text-gray-500">November 1, 2025</p>
+                            <p class="mt-2">Limited slots are available for the upcoming academic year. See the Admissions page for details.</p>
+                        </article>
+                    </div>
+                </section>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+            lucide.createIcons(); // Render icons
+        }
+
+        function renderAboutView() {
+            const content = `
+                <div class="max-w-4xl mx-auto py-12 px-4">
+                    <h1 class="text-4xl font-bold coffee-text mb-6 text-center">About Suzanaah Nursery & Primary School</h1>
+                    <div class="card p-8">
+                        <h2 class="text-2xl font-semibold coffee-text mb-4">Our Vision</h2>
+                        <p class="mb-6">To be the leading institution in providing foundational education that inspires innovation and moral excellence in every child.</p>
+
+                        <h2 class="text-2xl font-semibold coffee-text mb-4 mt-6">School Leadership and Values</h2>
+                        <ul class="list-disc list-inside space-y-2 dark-text">
+                            <li><strong>Head Teacher:</strong> Ms. E. Namara - Dedicated to academic discipline and staff development.</li>
+                            <li><strong>Core Values:</strong> Integrity, Compassion, Diligence, and Community Service.</li>
+                            <li><strong>Curriculum:</strong> We follow the national curriculum enhanced with specialized literacy and numeracy programs.</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+        }
+        
+        function renderAdmissionsView() {
+            const content = `
+                <div class="max-w-4xl mx-auto py-12 px-4">
+                    <h1 class="text-4xl font-bold coffee-text mb-6 text-center">Admissions and Enrollment</h1>
+                    <div class="card p-8">
+                        <h2 class="text-2xl font-semibold coffee-text mb-4">Nursery Section (Ages 3-5)</h2>
+                        <p class="mb-4">Our nursery program focuses on play-based learning, early literacy skills, and social interaction. Full-day and half-day options are available.</p>
+
+                        <h2 class="text-2xl font-semibold coffee-text mb-4 mt-6">Primary Section (P1 - P7)</h2>
+                        <p class="mb-4">Enrollment is based on academic assessment and availability. Key enrollment periods are January and May.</p>
+
+                        <div class="mt-6 p-4 rounded-lg cream-bg border-2 border-coffee">
+                            <h3 class="text-xl font-bold coffee-text mb-2">How to Apply</h3>
+                            <ol class="list-decimal list-inside dark-text">
+                                <li>Download and fill the application form from the link below.</li>
+                                <li>Submit the form with previous school report (for P2 and above).</li>
+                                <li>Pay the non-refundable application fee at the Bursar's office.</li>
+                                <li>Wait for a confirmation of the entrance assessment date.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+        }
+
+        function renderContactView() {
+            const content = `
+                <div class="max-w-4xl mx-auto py-12 px-4">
+                    <h1 class="text-4xl font-bold coffee-text mb-6 text-center">Contact Us</h1>
+                    <div class="card p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h2 class="text-2xl font-semibold coffee-text mb-4">Reach Out</h2>
+                            <p class="flex items-center mb-3">
+                                <i data-lucide="map-pin" class="w-5 h-5 mr-2 coffee-text"></i> Location: Nansana Kazinga, Wakiso district.
+                            </p>
+                            <p class="flex items-center mb-3">
+                                <i data-lucide="mail-open" class="w-5 h-5 mr-2 coffee-text"></i> Postal Address: PO Box 177532
+                            </p>
+                            <p class="flex items-center mb-3">
+                                <i data-lucide="phone" class="w-5 h-5 mr-2 coffee-text"></i> Phone: +256 770 123 456 (Secretary)
+                            </p>
+                            <p class="flex items-center mb-3">
+                                <i data-lucide="mail" class="w-5 h-5 mr-2 coffee-text"></i> Email: admissions@suzanaahschool.org
+                            </p>
+                            <p class="mt-4">
+                                Office Hours: Monday - Friday, 8:00 AM - 4:00 PM
+                            </p>
+                        </div>
+                        <div class="cream-bg p-4 rounded-xl">
+                            <h2 class="text-xl font-semibold coffee-text mb-4">Send us a Message</h2>
+                            <form id="contact-form">
+                                <input type="text" placeholder="Your Name" required class="w-full p-2 mb-3 rounded-md border border-gray-300 focus:ring-coffee focus:border-coffee">
+                                <input type="email" placeholder="Your Email" required class="w-full p-2 mb-3 rounded-md border border-gray-300 focus:ring-coffee focus:border-coffee">
+                                <textarea placeholder="Your Message..." rows="4" required class="w-full p-2 mb-3 rounded-md border border-gray-300 focus:ring-coffee focus:border-coffee"></textarea>
+                                <button type="submit" class="w-full py-2 px-4 coffee-bg cream-text rounded-lg font-bold transition-all btn-primary shadow-md">Send Message</button>
+                            </form>
+                            <div id="contact-message" class="mt-3 text-center hidden font-bold"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+            lucide.createIcons();
+            document.getElementById('contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const msgEl = document.getElementById('contact-message');
+                msgEl.classList.remove('hidden');
+                msgEl.textContent = 'Thank you! Your message has been received (Mock Submission).';
+                this.reset();
+            });
+        }
+
+
+        function renderLoginView() {
+            if (userProfile === null) {
+                renderRoleSelection();
+            } else {
+                // Should not happen if onSnapshot is working, but just in case:
+                navigate('dashboard');
+            }
+        }
+
+        function renderRoleSelection() {
+            const userId = currentUser ? currentUser.uid : 'N/A';
+            const roles = ['Parent', 'Learner', 'Teacher', 'Head Teacher', 'Bursar', 'Matron', 'Askari', 'Secretary'];
+            
+            const roleOptions = roles.map(role => `
+                <option value="${role.toLowerCase().replace(/\s/g, '-')}">${role}</option>
+            `).join('');
+
+            const content = `
+                <div class="flex justify-center items-center h-full py-12">
+                    <div class="card w-full max-w-md p-6 sm:p-8">
+                        <h1 class="text-3xl font-bold coffee-text text-center mb-6">User Role Setup (Mock Login)</h1>
+                        <p class="text-sm text-center mb-4 text-gray-500">Your unique User ID: <span class="font-mono text-xs">${userId}</span></p>
+
+                        <div id="loading-spinner" class="text-center hidden">
+                            <svg class="animate-spin h-8 w-8 coffee-text mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+                        
+                        <form id="role-setup-form" class="space-y-4">
+                            <div>
+                                <label for="user-name" class="block text-sm font-medium dark-text mb-1">Your Full Name</label>
+                                <input type="text" id="user-name" required class="w-full p-3 rounded-lg border border-gray-300 focus:ring-coffee focus:border-coffee" placeholder="e.g., John Doe">
+                            </div>
+                            <div>
+                                <label for="user-role" class="block text-sm font-medium dark-text mb-1">Select Your Role</label>
+                                <select id="user-role" required class="w-full p-3 rounded-lg border border-gray-300 bg-white focus:ring-coffee focus:border-coffee">
+                                    <option value="" disabled selected>-- Choose your role --</option>
+                                    ${roleOptions}
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full py-3 coffee-bg cream-text rounded-lg font-bold transition-all btn-primary shadow-md text-lg">
+                                Access Dashboard
+                            </button>
+                        </form>
+                        <div id="setup-message" class="mt-4 text-center text-sm font-medium hidden"></div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+            
+            document.getElementById('role-setup-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const nameInput = document.getElementById('user-name');
+                const roleSelect = document.getElementById('user-role');
+                const messageEl = document.getElementById('setup-message');
+                const spinner = document.getElementById('loading-spinner');
+                
+                const name = nameInput.value.trim();
+                const role = roleSelect.value;
+                const currentUserId = currentUser ? currentUser.uid : null;
+
+                if (!currentUserId) {
+                    messageEl.textContent = 'Error: Authentication failed. Please refresh.';
+                    messageEl.classList.remove('hidden', 'text-green-600');
+                    messageEl.classList.add('text-red-600');
+                    return;
+                }
+
+                spinner.classList.remove('hidden');
+                messageEl.classList.add('hidden');
+
+                const success = await saveUserProfile(currentUserId, name, role);
+
+                spinner.classList.add('hidden');
+                if (success) {
+                    messageEl.textContent = 'Success! Redirecting to dashboard...';
+                    messageEl.classList.remove('hidden', 'text-red-600');
+                    messageEl.classList.add('text-green-600');
+                    // The onSnapshot listener will catch the change and call navigate('dashboard')
+                } else {
+                    messageEl.textContent = 'Error setting up profile. Try again.';
+                    messageEl.classList.remove('hidden', 'text-green-600');
+                    messageEl.classList.add('text-red-600');
+                }
+            });
+        }
+
+        function renderDashboardView() {
+            if (!currentUser) {
+                // Should not happen if guard is correct, but safe fallback
+                navigate('login');
+                return;
+            }
+
+            if (!userProfile) {
+                renderRoleSelection(); // If profile is still loading or missing, go back to setup
+                return;
+            }
+
+            const { name, role } = userProfile;
+
+            // Define content dynamically based on role
+            let welcomeMessage = `Welcome to your dashboard, ${name}.`;
+            let actions = [];
+            let iconName = 'user';
+
+            switch (role) {
+                case 'head-teacher':
+                    welcomeMessage = `Welcome, Head Teacher ${name}. The school's operational overview is below.`;
+                    iconName = 'crown';
+                    actions = [
+                        { text: 'Review Staff Performance', icon: 'clipboard-list' },
+                        { text: 'Monitor School Budget', icon: 'dollar-sign' },
+                        { text: 'Approve Curriculum Changes', icon: 'book-marked' },
+                    ];
+                    break;
+                case 'teacher':
+                    welcomeMessage = `Welcome, Teacher ${name}. Manage your classes and resources here.`;
+                    iconName = 'graduation-cap';
+                    actions = [
+                        { text: 'Enter Learner Grades', icon: 'check-square' },
+                        { text: 'Access Teaching Resources', icon: 'folder-open' },
+                        { text: 'View Class Attendance', icon: 'users' },
+                    ];
+                    break;
+                case 'bursar':
+                    welcomeMessage = `Welcome, Bursar ${name}. Financial management tools are at your disposal.`;
+                    iconName = 'wallet';
+                    actions = [
+                        { text: 'Process Fee Payments', icon: 'credit-card' },
+                        { text: 'Generate Financial Reports', icon: 'file-text' },
+                        { text: 'Manage Supplier Invoices', icon: 'receipt' },
+                    ];
+                    break;
+                case 'secretary':
+                    welcomeMessage = `Welcome, Secretary ${name}. Manage administrative and communication tasks.`;
+                    iconName = 'desk';
+                    actions = [
+                        { text: 'Schedule Appointments', icon: 'calendar-check' },
+                        { text: 'Handle Incoming Mail', icon: 'inbox' },
+                        { text: 'Update School Announcements', icon: 'megaphone' },
+                    ];
+                    break;
+                case 'matron':
+                    welcomeMessage = `Welcome, Matron ${name}. Health and welfare matters are your priority.`;
+                    iconName = 'ambulance';
+                    actions = [
+                        { text: 'Log Sick Bay Visits', icon: 'pill' },
+                        { text: 'Manage Dormitory Inventory', icon: 'bed' },
+                        { text: 'Plan Meal Schedules', icon: 'soup' },
+                    ];
+                    break;
+                case 'askari':
+                    welcomeMessage = `Welcome, Askari ${name}. You are the backbone of our school's security.`;
+                    iconName = 'shield';
+                    actions = [
+                        { text: 'Log Visitor Details', icon: 'fingerprint' },
+                        { text: 'Report Security Incidents', icon: 'alert-triangle' },
+                        { text: 'Check Perimeter Logs', icon: 'fence' },
+                    ];
+                    break;
+                case 'parent':
+                    welcomeMessage = `Welcome, Parent ${name}. Keep track of your child's progress.`;
+                    iconName = 'baby';
+                    actions = [
+                        { text: 'View Child’s Grades', icon: 'bar-chart' },
+                        { text: 'Pay School Fees Online', icon: 'dollar-sign' },
+                        { text: 'Schedule Parent-Teacher Meeting', icon: 'message-circle' },
+                    ];
+                    break;
+                case 'learner':
+                    welcomeMessage = `Welcome, Learner ${name}. Access your timetable and homework.`;
+                    iconName = 'user-check';
+                    actions = [
+                        { text: 'View Timetable', icon: 'clock' },
+                        { text: 'Submit Assignments', icon: 'upload' },
+                        { text: 'Access Library Resources', icon: 'book' },
+                    ];
+                    break;
+                default:
+                    welcomeMessage = `Welcome, ${name}. Your role is currently undefined.`;
+                    actions = [];
+            }
+
+            const actionCards = actions.map(action => `
+                <div class="card p-5 transition-all hover:shadow-xl border border-transparent hover:border-coffee cursor-pointer">
+                    <i data-lucide="${action.icon}" class="w-8 h-8 coffee-text mb-3"></i>
+                    <h4 class="text-lg font-semibold dark-text">${action.text}</h4>
+                </div>
+            `).join('');
+
+            const content = `
+                <div class="max-w-6xl mx-auto py-12 px-4">
+                    <div class="card p-6 sm:p-10 mb-8 coffee-bg cream-text shadow-xl">
+                        <div class="flex items-center">
+                            <i data-lucide="${iconName}" class="w-10 h-10 mr-4"></i>
+                            <div>
+                                <h1 class="text-3xl font-extrabold">${welcomeMessage}</h1>
+                                <p class="text-sm font-medium mt-1 opacity-80">Role: ${role.charAt(0).toUpperCase() + role.slice(1).replace('-', ' ')} | User ID: ${currentUser.uid}</p>
+                            </div>
+                        </div>
+                        <button onclick="signOutUser()" class="mt-4 px-4 py-2 rounded-lg cream-bg coffee-text font-bold transition-all btn-primary shadow-md">
+                            Logout
+                        </button>
+                    </div>
+
+                    <h2 class="text-2xl font-bold coffee-text mb-6">Quick Access & Tasks</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${actionCards}
+                    </div>
+
+                    <h2 class="text-2xl font-bold coffee-text mt-12 mb-6">Announcements</h2>
+                    <div class="card p-6">
+                        <p class="font-bold mb-2">Notice for all staff:</p>
+                        <p>The termly performance review meeting is scheduled for Tuesday at 9:00 AM in the Head Teacher's office. Please bring your preparation notes.</p>
+                        <p class="text-sm text-gray-500 mt-2">Posted by: Secretary (Mock Data)</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+            lucide.createIcons();
+        }
+
+        window.signOutUser = async () => {
+            try {
+                await signOut(auth);
+                userProfile = null;
+                console.log("User signed out successfully.");
+                navigate('home');
+            } catch (error) {
+                console.error("Logout failed:", error);
+                renderError('Logout failed. Please check your connection.');
+            }
+        };
+
+        // Initialize the app view on load
+        window.addEventListener('load', () => {
+            navigate('home');
+        });
+
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suzanaah Nursery and Primary School</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for aesthetic components -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Define custom colors for the coffee brown and cream theme */
+        :root {
+            --color-coffee: #6F4E37; /* Primary Brown */
+            --color-cream: #F5F5DC;  /* Secondary Cream */
+            --color-dark-text: #333333;
+        }
+
+        /* Set default font to Inter, as required */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-cream);
+        }
+
+        /* Custom Tailwind Configuration */
+        .coffee-bg { background-color: var(--color-coffee); }
+        .cream-bg { background-color: var(--color-cream); }
+        .coffee-text { color: var(--color-coffee); }
+        .cream-text { color: var(--color-cream); }
+        .dark-text { color: var(--color-dark-text); }
+        .border-coffee { border-color: var(--color-coffee); }
+
+        /* Custom scrollbar for better visual appeal */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-cream); }
+        ::-webkit-scrollbar-thumb { background: var(--color-coffee); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #5a4130; }
+
+        /* General Card Styling */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+        }
+
+        /* Button hover effect */
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(111, 78, 55, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col dark-text">
+
+    <!-- Navbar/Header Component -->
+    <header class="coffee-bg shadow-lg sticky top-0 z-10">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 cream-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6M9 18l-3 3M15 18l3 3"></path></svg>
+                    <span class="text-2xl font-bold cream-text">Suzanaah School</span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4 text-sm font-medium">
+                    <button onclick="navigate('home')" class="cream-text hover:underline focus:outline-none">Home</button>
+                    <button onclick="navigate('about')" class="cream-text hover:underline focus:outline-none">About Us</button>
+                    <button onclick="navigate('admissions')" class="cream-text hover:underline focus:outline-none">Admissions</button>
+                    <button onclick="navigate('contact')" class="cream-text hover:underline focus:outline-none">Contact</button>
+                    <button id="auth-button" onclick="handleAuthClick()" class="ml-4 px-4 py-2 rounded-lg cream-bg coffee-text transition-all btn-primary shadow-md">
+                        Login
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg cream-bg coffee-text" onclick="toggleMobileMenu()">
+                    <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden absolute w-full coffee-bg shadow-2xl">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center text-base">
+                <button onclick="navigate('home'); toggleMobileMenu();" class="block w-full px-3 py-2 rounded-md cream-text hover:bg-opacity-80">Home</button>
+                <button onclick="navigate('about'); toggleMobileMenu();" class="block w-full px-3 py-2 rounded-md cream-text hover:bg-opacity-80">About Us</button>
+                <button onclick="navigate('admissions'); toggleMobileMenu();" class="block w-full px-3 py-2 rounded-md cream-text hover:bg-opacity-80">Admissions</button>
+                <button onclick="navigate('contact'); toggleMobileMenu();" class="block w-full px-3 py-2 rounded-md cream-text hover:bg-opacity-80">Contact</button>
+                <button id="mobile-auth-button" onclick="handleAuthClick(); toggleMobileMenu();" class="w-full mt-2 px-3 py-2 rounded-lg cream-bg coffee-text font-bold transition-all btn-primary shadow-md">Login</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area (Dynamic View Container) -->
+    <main id="app-container" class="flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+        <!-- Content will be injected here based on the view state -->
+    </main>
+
+    <!-- Footer Component -->
+    <footer class="coffee-bg mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center cream-text text-sm">
+            &copy; 2025 Suzanaah Nursery and Primary School. All Rights Reserved.
+            <div class="mt-1">
+                <span id="user-id-display">Current User ID: Not Signed In</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Set log level for debugging
+        setLogLevel('debug');
+
+        // Global Firebase variables
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app, db, auth, currentView = 'home';
+        let currentUser = null; // Stores user object from Firebase
+        let userProfile = null; // Stores user role and name from Firestore
+
+        // --- Core Firebase Initialization ---
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            // 1. Handle Authentication
+            onAuthStateChanged(auth, async (user) => {
+                currentUser = user;
+                const userIdDisplay = document.getElementById('user-id-display');
+                const authButton = document.getElementById('auth-button');
+                const mobileAuthButton = document.getElementById('mobile-auth-button');
+
+                if (user) {
+                    const userId = user.uid;
+                    userIdDisplay.textContent = `Current User ID: ${userId}`;
+                    authButton.textContent = 'Dashboard';
+                    mobileAuthButton.textContent = 'Dashboard';
+
+                    // Start listening to the user's profile (role) in Firestore
+                    listenToUserProfile(userId);
+
+                } else {
+                    // Sign in anonymously if no custom token is provided
+                    if (!initialAuthToken) {
+                        await signInAnonymously(auth);
+                        console.log("Signed in anonymously.");
+                    } else {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                        console.log("Signed in with custom token.");
+                    }
+
+                    userIdDisplay.textContent = `Current User ID: Not Signed In`;
+                    authButton.textContent = 'Login';
+                    mobileAuthButton.textContent = 'Login';
+
+                    // If we just signed out, clear the profile
+                    userProfile = null;
+                }
+
+                // Initial render after auth state is known
+                navigate(currentView);
+            });
+
+        } catch (error) {
+            console.error("Firebase initialization failed:", error);
+            renderError('Firebase Initialization Error: Check console for details.');
+        }
+
+        // --- Firestore Operations ---
+
+        const getUserProfileRef = (userId) => {
+            // Path: /artifacts/{appId}/public/data/users/{userId}
+            return doc(db, 'artifacts', appId, 'public', 'data', 'users', userId);
+        };
+
+        const listenToUserProfile = (userId) => {
+            const profileRef = getUserProfileRef(userId);
+            
+            // Real-time listener for the user's profile/role
+            onSnapshot(profileRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    userProfile = docSnap.data();
+                    console.log("User Profile loaded:", userProfile);
+                    // Re-render dashboard if we are currently on it
+                    if (currentView === 'dashboard' || currentView === 'login') {
+                        navigate(currentView);
+                    }
+                } else {
+                    userProfile = null;
+                    console.log("User profile does not exist, navigate to role selection.");
+                    // Force navigation to login/role selection if not found
+                    if (currentView !== 'login') {
+                        navigate('login');
+                    } else {
+                        // Re-render login to show role selection
+                        navigate('login');
+                    }
+                }
+            }, (error) => {
+                console.error("Error listening to user profile:", error);
+                renderError('Failed to load user profile in real-time.');
+            });
+        };
+
+        const saveUserProfile = async (userId, name, role) => {
+            const profileRef = getUserProfileRef(userId);
+            try {
+                await setDoc(profileRef, {
+                    name,
+                    role,
+                    createdAt: new Date().toISOString()
+                }, { merge: true });
+                console.log("User profile saved successfully.");
+                return true;
+            } catch (error) {
+                console.error("Error saving user profile:", error);
+                renderError('Failed to save user profile.');
+                return false;
+            }
+        };
+
+        // --- View Logic and Rendering ---
+
+        window.navigate = (view) => {
+            currentView = view;
+            const container = document.getElementById('app-container');
+            container.innerHTML = '';
+            
+            if (currentUser && (view === 'login' || view === 'dashboard')) {
+                 // If logged in, clicking 'Login' button redirects to dashboard
+                 renderDashboardView();
+            } else if (view === 'login') {
+                renderLoginView();
+            } else if (view === 'about') {
+                renderAboutView();
+            } else if (view === 'admissions') {
+                renderAdmissionsView();
+            } else if (view === 'contact') {
+                renderContactView();
+            } else {
+                renderHomeView();
+            }
+        };
+
+        window.handleAuthClick = () => {
+            if (currentUser) {
+                // Already signed in, go to dashboard
+                navigate('dashboard');
+            } else {
+                // Not signed in, go to login
+                navigate('login');
+            }
+        };
+        
+        window.toggleMobileMenu = () => {
+            const menu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+            const isHidden = menu.classList.contains('hidden');
+
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        };
+
+        function renderError(message) {
+            const container = document.getElementById('app-container');
+            container.innerHTML = `
+                <div class="card bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+                    <p class="font-bold">Error Occurred</p>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        // --- Dynamic View Functions ---
+
+        function renderHomeView() {
+            const content = `
+                <section class="text-center py-16 px-4">
+                    <h1 class="text-5xl font-extrabold coffee-text mb-4">Welcome to Suzanaah School</h1>
+                    <p class="text-xl dark-text max-w-3xl mx-auto mb-8">
+                        Nurturing bright futures from nursery to primary levels with excellence, integrity, and faith.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="card p-6 border-l-4 border-coffee shadow-lg">
+                            <h3 class="text-2xl font-semibold coffee-text mb-2 flex items-center justify-center">
+                                <i data-lucide="book-open-text" class="w-6 h-6 mr-2"></i> Quality Education
+                            </h3>
+                            <p class="dark-text">A rigorous curriculum balanced with creative and moral development.</p>
+                        </div>
+                        <div class="card p-6 border-l-4 border-coffee shadow-lg">
+                            <h3 class="text-2xl font-semibold coffee-text mb-2 flex items-center justify-center">
+                                <i data-lucide="sparkles" class="w-6 h-6 mr-2"></i> Holistic Growth
+                            </h3>
+                            <p class="dark-text">Focus on physical, social, emotional, and spiritual well-being.</p>
+                        </div>
+                        <div class="card p-6 border-l-4 border-coffee shadow-lg">
+                            <h3 class="text-2xl font-semibold coffee-text mb-2 flex items-center justify-center">
+                                <i data-lucide="heart" class="w-6 h-6 mr-2"></i> Caring Community
+                            </h3>
+                            <p class="dark-text">A supportive environment where every child feels safe and valued.</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="py-12 px-4">
+                    <h2 class="text-3xl font-bold coffee-text text-center mb-8">Latest School News</h2>
+                    <div class="card max-w-4xl mx-auto p-6">
+                        <article class="border-b pb-4 mb-4">
+                            <h4 class="text-xl font-semibold coffee-text">Annual Sports Day Success</h4>
+                            <p class="text-sm text-gray-500">October 26, 2025</p>
+                            <p class="mt-2">Our students showcased incredible teamwork and sportsmanship at the annual event. Congratulations to all the participants!</p>
+                        </article>
+                        <article>
+                            <h4 class="text-xl font-semibold coffee-text">Enrollment for P1 and P2 Now Open</h4>
+                            <p class="text-sm text-gray-500">November 1, 2025</p>
+                            <p class="mt-2">Limited slots are available for the upcoming academic year. See the Admissions page for details.</p>
+                        </article>
+                    </div>
+                </section>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+            lucide.createIcons(); // Render icons
+        }
+
+        function renderAboutView() {
+            const content = `
+                <div class="max-w-4xl mx-auto py-12 px-4">
+                    <h1 class="text-4xl font-bold coffee-text mb-6 text-center">About Suzanaah Nursery & Primary School</h1>
+                    <div class="card p-8">
+                        <h2 class="text-2xl font-semibold coffee-text mb-4">Our Vision</h2>
+                        <p class="mb-6">To be the leading institution in providing foundational education that inspires innovation and moral excellence in every child.</p>
+
+                        <h2 class="text-2xl font-semibold coffee-text mb-4 mt-6">School Leadership and Values</h2>
+                        <ul class="list-disc list-inside space-y-2 dark-text">
+                            <li><strong>Head Teacher:</strong> Ms. E. Namara - Dedicated to academic discipline and staff development.</li>
+                            <li><strong>Core Values:</strong> Integrity, Compassion, Diligence, and Community Service.</li>
+                            <li><strong>Curriculum:</strong> We follow the national curriculum enhanced with specialized literacy and numeracy programs.</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+        }
+        
+        function renderAdmissionsView() {
+            const content = `
+                <div class="max-w-4xl mx-auto py-12 px-4">
+                    <h1 class="text-4xl font-bold coffee-text mb-6 text-center">Admissions and Enrollment</h1>
+                    <div class="card p-8">
+                        <h2 class="text-2xl font-semibold coffee-text mb-4">Nursery Section (Ages 3-5)</h2>
+                        <p class="mb-4">Our nursery program focuses on play-based learning, early literacy skills, and social interaction. Full-day and half-day options are available.</p>
+
+                        <h2 class="text-2xl font-semibold coffee-text mb-4 mt-6">Primary Section (P1 - P7)</h2>
+                        <p class="mb-4">Enrollment is based on academic assessment and availability. Key enrollment periods are January and May.</p>
+
+                        <div class="mt-6 p-4 rounded-lg cream-bg border-2 border-coffee">
+                            <h3 class="text-xl font-bold coffee-text mb-2">How to Apply</h3>
+                            <ol class="list-decimal list-inside dark-text">
+                                <li>Download and fill the application form from the link below.</li>
+                                <li>Submit the form with previous school report (for P2 and above).</li>
+                                <li>Pay the non-refundable application fee at the Bursar's office.</li>
+                                <li>Wait for a confirmation of the entrance assessment date.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+        }
+
+        function renderContactView() {
+            const content = `
+                <div class="max-w-4xl mx-auto py-12 px-4">
+                    <h1 class="text-4xl font-bold coffee-text mb-6 text-center">Contact Us</h1>
+                    <div class="card p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h2 class="text-2xl font-semibold coffee-text mb-4">Reach Out</h2>
+                            <p class="flex items-center mb-3">
+                                <i data-lucide="map-pin" class="w-5 h-5 mr-2 coffee-text"></i> Location: Nansana Kazinga, Wakiso district.
+                            </p>
+                            <p class="flex items-center mb-3">
+                                <i data-lucide="mail-open" class="w-5 h-5 mr-2 coffee-text"></i> Postal Address: PO Box 177532
+                            </p>
+                            <p class="flex items-center mb-3">
+                                <i data-lucide="phone" class="w-5 h-5 mr-2 coffee-text"></i> Phone: +256 770 123 456 (Secretary)
+                            </p>
+                            <p class="flex items-center mb-3">
+                                <i data-lucide="mail" class="w-5 h-5 mr-2 coffee-text"></i> Email: admissions@suzanaahschool.org
+                            </p>
+                            <p class="mt-4">
+                                Office Hours: Monday - Friday, 8:00 AM - 4:00 PM
+                            </p>
+                        </div>
+                        <div class="cream-bg p-4 rounded-xl">
+                            <h2 class="text-xl font-semibold coffee-text mb-4">Send us a Message</h2>
+                            <form id="contact-form">
+                                <input type="text" placeholder="Your Name" required class="w-full p-2 mb-3 rounded-md border border-gray-300 focus:ring-coffee focus:border-coffee">
+                                <input type="email" placeholder="Your Email" required class="w-full p-2 mb-3 rounded-md border border-gray-300 focus:ring-coffee focus:border-coffee">
+                                <textarea placeholder="Your Message..." rows="4" required class="w-full p-2 mb-3 rounded-md border border-gray-300 focus:ring-coffee focus:border-coffee"></textarea>
+                                <button type="submit" class="w-full py-2 px-4 coffee-bg cream-text rounded-lg font-bold transition-all btn-primary shadow-md">Send Message</button>
+                            </form>
+                            <div id="contact-message" class="mt-3 text-center hidden font-bold"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+            lucide.createIcons();
+            document.getElementById('contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const msgEl = document.getElementById('contact-message');
+                msgEl.classList.remove('hidden');
+                msgEl.textContent = 'Thank you! Your message has been received (Mock Submission).';
+                this.reset();
+            });
+        }
+
+
+        function renderLoginView() {
+            if (userProfile === null) {
+                renderRoleSelection();
+            } else {
+                // Should not happen if onSnapshot is working, but just in case:
+                navigate('dashboard');
+            }
+        }
+
+        function renderRoleSelection() {
+            const userId = currentUser ? currentUser.uid : 'N/A';
+            const roles = ['Parent', 'Learner', 'Teacher', 'Head Teacher', 'Bursar', 'Matron', 'Askari', 'Secretary'];
+            
+            const roleOptions = roles.map(role => `
+                <option value="${role.toLowerCase().replace(/\s/g, '-')}">${role}</option>
+            `).join('');
+
+            const content = `
+                <div class="flex justify-center items-center h-full py-12">
+                    <div class="card w-full max-w-md p-6 sm:p-8">
+                        <h1 class="text-3xl font-bold coffee-text text-center mb-6">User Role Setup (Mock Login)</h1>
+                        <p class="text-sm text-center mb-4 text-gray-500">Your unique User ID: <span class="font-mono text-xs">${userId}</span></p>
+
+                        <div id="loading-spinner" class="text-center hidden">
+                            <svg class="animate-spin h-8 w-8 coffee-text mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+                        
+                        <form id="role-setup-form" class="space-y-4">
+                            <div>
+                                <label for="user-name" class="block text-sm font-medium dark-text mb-1">Your Full Name</label>
+                                <input type="text" id="user-name" required class="w-full p-3 rounded-lg border border-gray-300 focus:ring-coffee focus:border-coffee" placeholder="e.g., John Doe">
+                            </div>
+                            <div>
+                                <label for="user-role" class="block text-sm font-medium dark-text mb-1">Select Your Role</label>
+                                <select id="user-role" required class="w-full p-3 rounded-lg border border-gray-300 bg-white focus:ring-coffee focus:border-coffee">
+                                    <option value="" disabled selected>-- Choose your role --</option>
+                                    ${roleOptions}
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full py-3 coffee-bg cream-text rounded-lg font-bold transition-all btn-primary shadow-md text-lg">
+                                Access Dashboard
+                            </button>
+                        </form>
+                        <div id="setup-message" class="mt-4 text-center text-sm font-medium hidden"></div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+            
+            document.getElementById('role-setup-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const nameInput = document.getElementById('user-name');
+                const roleSelect = document.getElementById('user-role');
+                const messageEl = document.getElementById('setup-message');
+                const spinner = document.getElementById('loading-spinner');
+                
+                const name = nameInput.value.trim();
+                const role = roleSelect.value;
+                const currentUserId = currentUser ? currentUser.uid : null;
+
+                if (!currentUserId) {
+                    messageEl.textContent = 'Error: Authentication failed. Please refresh.';
+                    messageEl.classList.remove('hidden', 'text-green-600');
+                    messageEl.classList.add('text-red-600');
+                    return;
+                }
+
+                spinner.classList.remove('hidden');
+                messageEl.classList.add('hidden');
+
+                const success = await saveUserProfile(currentUserId, name, role);
+
+                spinner.classList.add('hidden');
+                if (success) {
+                    messageEl.textContent = 'Success! Redirecting to dashboard...';
+                    messageEl.classList.remove('hidden', 'text-red-600');
+                    messageEl.classList.add('text-green-600');
+                    // The onSnapshot listener will catch the change and call navigate('dashboard')
+                } else {
+                    messageEl.textContent = 'Error setting up profile. Try again.';
+                    messageEl.classList.remove('hidden', 'text-green-600');
+                    messageEl.classList.add('text-red-600');
+                }
+            });
+        }
+
+        function renderDashboardView() {
+            if (!currentUser) {
+                // Should not happen if guard is correct, but safe fallback
+                navigate('login');
+                return;
+            }
+
+            if (!userProfile) {
+                renderRoleSelection(); // If profile is still loading or missing, go back to setup
+                return;
+            }
+
+            const { name, role } = userProfile;
+
+            // Define content dynamically based on role
+            let welcomeMessage = `Welcome to your dashboard, ${name}.`;
+            let actions = [];
+            let iconName = 'user';
+
+            switch (role) {
+                case 'head-teacher':
+                    welcomeMessage = `Welcome, Head Teacher ${name}. The school's operational overview is below.`;
+                    iconName = 'crown';
+                    actions = [
+                        { text: 'Review Staff Performance', icon: 'clipboard-list' },
+                        { text: 'Monitor School Budget', icon: 'dollar-sign' },
+                        { text: 'Approve Curriculum Changes', icon: 'book-marked' },
+                    ];
+                    break;
+                case 'teacher':
+                    welcomeMessage = `Welcome, Teacher ${name}. Manage your classes and resources here.`;
+                    iconName = 'graduation-cap';
+                    actions = [
+                        { text: 'Enter Learner Grades', icon: 'check-square' },
+                        { text: 'Access Teaching Resources', icon: 'folder-open' },
+                        { text: 'View Class Attendance', icon: 'users' },
+                    ];
+                    break;
+                case 'bursar':
+                    welcomeMessage = `Welcome, Bursar ${name}. Financial management tools are at your disposal.`;
+                    iconName = 'wallet';
+                    actions = [
+                        { text: 'Process Fee Payments', icon: 'credit-card' },
+                        { text: 'Generate Financial Reports', icon: 'file-text' },
+                        { text: 'Manage Supplier Invoices', icon: 'receipt' },
+                    ];
+                    break;
+                case 'secretary':
+                    welcomeMessage = `Welcome, Secretary ${name}. Manage administrative and communication tasks.`;
+                    iconName = 'desk';
+                    actions = [
+                        { text: 'Schedule Appointments', icon: 'calendar-check' },
+                        { text: 'Handle Incoming Mail', icon: 'inbox' },
+                        { text: 'Update School Announcements', icon: 'megaphone' },
+                    ];
+                    break;
+                case 'matron':
+                    welcomeMessage = `Welcome, Matron ${name}. Health and welfare matters are your priority.`;
+                    iconName = 'ambulance';
+                    actions = [
+                        { text: 'Log Sick Bay Visits', icon: 'pill' },
+                        { text: 'Manage Dormitory Inventory', icon: 'bed' },
+                        { text: 'Plan Meal Schedules', icon: 'soup' },
+                    ];
+                    break;
+                case 'askari':
+                    welcomeMessage = `Welcome, Askari ${name}. You are the backbone of our school's security.`;
+                    iconName = 'shield';
+                    actions = [
+                        { text: 'Log Visitor Details', icon: 'fingerprint' },
+                        { text: 'Report Security Incidents', icon: 'alert-triangle' },
+                        { text: 'Check Perimeter Logs', icon: 'fence' },
+                    ];
+                    break;
+                case 'parent':
+                    welcomeMessage = `Welcome, Parent ${name}. Keep track of your child's progress.`;
+                    iconName = 'baby';
+                    actions = [
+                        { text: 'View Child’s Grades', icon: 'bar-chart' },
+                        { text: 'Pay School Fees Online', icon: 'dollar-sign' },
+                        { text: 'Schedule Parent-Teacher Meeting', icon: 'message-circle' },
+                    ];
+                    break;
+                case 'learner':
+                    welcomeMessage = `Welcome, Learner ${name}. Access your timetable and homework.`;
+                    iconName = 'user-check';
+                    actions = [
+                        { text: 'View Timetable', icon: 'clock' },
+                        { text: 'Submit Assignments', icon: 'upload' },
+                        { text: 'Access Library Resources', icon: 'book' },
+                    ];
+                    break;
+                default:
+                    welcomeMessage = `Welcome, ${name}. Your role is currently undefined.`;
+                    actions = [];
+            }
+
+            const actionCards = actions.map(action => `
+                <div class="card p-5 transition-all hover:shadow-xl border border-transparent hover:border-coffee cursor-pointer">
+                    <i data-lucide="${action.icon}" class="w-8 h-8 coffee-text mb-3"></i>
+                    <h4 class="text-lg font-semibold dark-text">${action.text}</h4>
+                </div>
+            `).join('');
+
+            const content = `
+                <div class="max-w-6xl mx-auto py-12 px-4">
+                    <div class="card p-6 sm:p-10 mb-8 coffee-bg cream-text shadow-xl">
+                        <div class="flex items-center">
+                            <i data-lucide="${iconName}" class="w-10 h-10 mr-4"></i>
+                            <div>
+                                <h1 class="text-3xl font-extrabold">${welcomeMessage}</h1>
+                                <p class="text-sm font-medium mt-1 opacity-80">Role: ${role.charAt(0).toUpperCase() + role.slice(1).replace('-', ' ')} | User ID: ${currentUser.uid}</p>
+                            </div>
+                        </div>
+                        <button onclick="signOutUser()" class="mt-4 px-4 py-2 rounded-lg cream-bg coffee-text font-bold transition-all btn-primary shadow-md">
+                            Logout
+                        </button>
+                    </div>
+
+                    <h2 class="text-2xl font-bold coffee-text mb-6">Quick Access & Tasks</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${actionCards}
+                    </div>
+
+                    <h2 class="text-2xl font-bold coffee-text mt-12 mb-6">Announcements</h2>
+                    <div class="card p-6">
+                        <p class="font-bold mb-2">Notice for all staff:</p>
+                        <p>The termly performance review meeting is scheduled for Tuesday at 9:00 AM in the Head Teacher's office. Please bring your preparation notes.</p>
+                        <p class="text-sm text-gray-500 mt-2">Posted by: Secretary (Mock Data)</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('app-container').innerHTML = content;
+            lucide.createIcons();
+        }
+
+        window.signOutUser = async () => {
+            try {
+                await signOut(auth);
+                userProfile = null;
+                console.log("User signed out successfully.");
+                navigate('home');
+            } catch (error) {
+                console.error("Logout failed:", error);
+                renderError('Logout failed. Please check your connection.');
+            }
+        };
+
+        // Initialize the app view on load
+        window.addEventListener('load', () => {
+            navigate('home');
+        });
+
+    </script>
+</body>
+</html>
+
